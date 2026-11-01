@@ -29,6 +29,15 @@ namespace EventReminder.Services.Api.Controllers
                 .Bind(query => Mediator.Send(query))
                 .Match(Ok, NotFound);
 
+        [HttpGet(ApiRoutes.Users.GetTestById)]
+        [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetTestById(Guid userId) =>
+            await Maybe<GetUserByIdQuery>
+                .From(new GetUserByIdQuery(userId))
+                .Bind(query => Mediator.Send(query))
+                .Match(Ok, NotFound);
+
         [HttpPut(ApiRoutes.Users.Update)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status400BadRequest)]
